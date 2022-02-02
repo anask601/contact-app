@@ -301,7 +301,7 @@ const editModalUpdateBtnHandler = () => {
     if (validAl.className.includes("visible-alert")) {
       swal({
         title: "Ooops!",
-        text: "Please fill alll mandetory fields *",
+        text: "Please fill all mandetory fields *",
         icon: "error",
       });
       return;
