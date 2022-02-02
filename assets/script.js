@@ -148,7 +148,7 @@ const renderContactElement = () => {
   contacts.map((contact) => {
     let editId = `edit${Math.random()}`;
     let deleteId = `delete${Math.random()}`;
-    const newContactElement = document.createElement("div");
+    const newContactElement = document.createElement("li");
     newContactElement.className = "contact-element";
     newContactElement.innerHTML = `
        <div class="contact-element__image">
@@ -271,6 +271,8 @@ const addContactHandler = () => {
     status: statusVal,
   };
   contacts.push(newContacts);
+
+  sessionStorage.setItem("contactsData", JSON.stringify(contacts));
   closeAddContactModal();
   toggleBackdrop();
   renderContactElement();
