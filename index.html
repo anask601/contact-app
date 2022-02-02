@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Contacts App</title>
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
       integrity="sha512-u7ppO4TLg4v6EY8yQ6T6d66inT0daGyTodAi6ycbw9+/AU8KMLAF7Z7YGKPMRA96v7t+c7O1s6YCTGkok6p9ZA=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
-    />
+    /> -->
     <link rel="stylesheet" href="assets/style.css" />
     <script src="assets/script.js" defer></script>
+    <script
+      src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"
+      defer
+    ></script>
   </head>
   <body>
     <div id="backdrop"></div>
@@ -21,24 +25,38 @@
       <div class="modal__content">
         <label for="First Name">First Name</label>
         <input type="text" name="First Name" id="First-Name" />
-        <small>error</small>
+        <small class="hidden-alert" id="valid-alert" style="color: red"
+          >Required*</small
+        >
         <label for="Last Name">Last Name</label>
         <input type="text" name="Last Name" id="Last-Name" />
-        <small>error</small>
+        <small class="hidden-alert" id="valid-alert" style="color: red"
+          >Required*</small
+        >
         <label for="image-url">Profile Photo(url)</label>
         <input type="text" name="image-url" id="image-url" />
+        <small class="hidden-alert optional" id="valid-alert" style="color: red"
+          >optional</small
+        >
         <label for="email">Email</label>
         <input type="email" name="email" id="email" />
-        <small>error msg</small>
+        <small class="hidden-alert" id="valid-alert" style="color: red"
+          >Required*</small
+        >
         <label for="phone">Phone No:</label>
         <input type="number" name="phone" id="phone" step="10" />
-        <small>error msg</small>
+        <small class="hidden-alert" id="valid-alert" style="color: red"
+          >Required*</small
+        >
         <label for="status">Status</label>
         <div class="status">
           <label for="active">Active</label>
           <input type="radio" name="status" value="Active" />
           <label for="inactive">Inactive</label>
           <input type="radio" name="status" value="Inactive" />
+          <small class="hidden-alert" id="valid-alert" style="color: red"
+            >Required*</small
+          >
         </div>
       </div>
       <div class="modal__actions">
@@ -62,21 +80,31 @@
       <small>error</small>
       <label for="Last Name">Last Name</label>
       <input type="text" name="Last Name" id="Last-Name" />
-      <small>error</small>
+      <span class="hidden-alert" id="valid-alert" style="color: red"
+        >Required*</span
+      >
       <label for="image-url">Profile Photo(url)</label>
       <input type="text" name="image-url" id="image-url" />
+      <span class="hidden-alert" id="valid-alert" style="color: red"></span>
       <label for="email">Email</label>
       <input type="email" name="email" id="" />
-      <small>error</small>
+      <span class="hidden-alert optional" id="valid-alert" style="color: red"
+        >Required*</span
+      >
       <label for="phone">Phone No:</label>
       <input type="number" name="phone" id="" step="10" />
-      <small>error</small>
+      <span class="hidden-alert" id="valid-alert" style="color: red"
+        >Required*</span
+      >
       <label for="status">Status</label>
       <div class="status">
         <label for="active">Active</label>
         <input type="radio" name="status" value="Active" />
         <label for="inactive">Inactive</label>
         <input type="radio" name="status" value="Inactive" />
+        <span class="hidden-alert" id="valid-alert" style="color: red"
+          >Required*</span
+        >
       </div>
       <div id="save-btn">
         <button class="btn btn--success" id="update-btn-edit">Save</button>
@@ -84,7 +112,8 @@
       </div>
     </div>
     <header>
-      <h1>My Contact App</h1>
+      <img alt="#" src="assets/svg/icons8-address-book-2-50.png" />
+      <h1>Contact Directory</h1>
       <img
         id="contact-add"
         src="https://img.icons8.com/fluency/50/000000/add-phone.png"

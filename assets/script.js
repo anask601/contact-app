@@ -12,9 +12,17 @@ const editContactModal = document.getElementById("edit-contact-modal");
 const editModalCancelBtn = document.getElementById("cancel-btn-edit");
 const editModalUpdateBtn = document.getElementById("update-btn-edit");
 const editModalInputs = editContactModal.querySelectorAll("input");
+const addValidAlert = document.querySelectorAll("small");
+const editValidAlert = document.querySelectorAll("span");
 
 let successBtn = document.getElementById("btn-success");
 const contacts = [];
+
+// if (!sessionStorage.getItem("contactsData")) {
+//   sessionStorage.setItem("contactsData", JSON.stringify(contacts));
+// } else {
+//   contacts = JSON.parse(sessionStorage.getItem("contactsData"));
+// }
 
 let selectedContactForEdit = {};
 
@@ -40,13 +48,16 @@ const removeBackdrop = () => {
 };
 
 const clearUsrInputs = () => {
-  for (const usrInput of userInputs) {
-    if (usrInput.type === "radio") {
-      usrInput.checked = false;
-    } else {
-      usrInput.value = "";
+  userInputs.forEach((userinput) =>
+    userinput.type === "radio"
+      ? (userinput.checked = false)
+      : (userinput.value = "")
+  );
+  addValidAlert.forEach((valiAl, idx) => {
+    if (valiAl.className.includes("visible-alert")) {
+      addValidAlert[idx].classList.remove("visible-alert");
     }
-  }
+  });
 };
 
 const cancelAddContactModal = () => {
@@ -83,32 +94,24 @@ const deleteContactElement = (contactId) => {
 
 const deleteContactConfirmation = (contactId) => {
   let contactIndex = 0;
-  // for (const contact of contacts) {
-  //   if (contact.id === contactId) {
-  //     break;
-  //   }
-  //   contactIndex++;
-  // }
 
   contacts.find(
     (contact, idx) =>
       (contactIndex = contact.id === contactId ? idx : contactIndex)
-    // if (contact.id === contactId) {
-    //   return contactIndex = idx;
-    // }
   );
 
   contacts.splice(contactIndex, 1);
+  sessionStorage.setItem("contactsData", JSON.stringify(contacts));
+
   const newContactList = document.getElementById("contact-list");
   newContactList.children[contactIndex].remove();
   cancelContactDeletion();
   updateUi();
 };
+
 // ----------------------- Edit Contact Operation --------------
 const editModalOperations = (id) => {
   const obj = contacts.find((contact) => (newObject = contact.id === id));
-  console.log(obj);
-  console.log(editModalInputs);
   editModalInputs[0].value = obj.firstName;
   editModalInputs[1].value = obj.lastName;
   editModalInputs[2].value = obj.image;
@@ -124,8 +127,6 @@ const editModalOperations = (id) => {
 //------------------------  Edit Contact ----------------------//
 
 const editContactHandler = (obj) => {
-  // const selectedContact = contacts.filter((el) => el.id === contId);
-  // console.log(selectedContact);
   toggleBackdrop();
   editContactModal.classList.add("visible");
   editModalOperations(obj.id);
@@ -134,12 +135,19 @@ const editContactHandler = (obj) => {
 
 //------------------------  Edit Contact ----------------------//
 
+const randomNumberGenerator = () => {
+  return Math.floor(Math.random() * 100000 + 1);
+};
+
+const randomAvatarUrlGenerator = () => {
+  return `https://avatars.dicebear.com/api/bottts/${randomNumberGenerator()}.svg`;
+};
+
 const renderContactElement = () => {
   resetUi();
   contacts.map((contact) => {
     const editId = `edit${Math.random()}`;
     const deleteId = `delete${Math.random()}`;
-
     const newContactElement = document.createElement("div");
     newContactElement.className = "contact-element";
     newContactElement.innerHTML = `
@@ -148,16 +156,16 @@ const renderContactElement = () => {
        </div>
        <div class="contact-element__info">
        <h2>${contact.firstName} ${contact.lastName}</h2>
-       <p><i class="fa fa-envelope"></i> E-mail : ${contact.email}</p>
-       <p><i class="fa fa-phone" style=color:blue"></i> Phone : ${
-         contact.phoneNo
-       }</p>
-       <p>Status : <bold style="color : ${
-         contact.status === "Active" ? "green" : "red"
-       }">${contact.status}</bold></p>
+      <div class="inner-div"> <p>E-mail : ${contact.email}</p></div>
+      <div class="inner-div"> <p><i class="fa fa-phone" style=color:blue"></i> Phone : ${
+        contact.phone
+      }</p></div>
+      <div class="inner-div"> <p>Status : <bold style="color : ${
+        contact.status === "Active" ? "green" : "red"
+      }">${contact.status}</bold></p></div>
        <div class="edit-box">
-       <button class="btn btn--edit " id="${editId}"><edit</button>
-       <button class="btn btn--delete " id="${deleteId}">delete</button>
+       <button class="btn btn--edit edits" id="${editId}">Edit</button>
+       <button class="btn btn--delete editd" id="${deleteId}">Delete</button>
        </div>
        </div>
       `;
@@ -170,6 +178,9 @@ const renderContactElement = () => {
   });
 };
 
+renderContactElement();
+updateUi();
+
 const closeAddContactModal = () => {
   contactModal.classList.remove("visible");
 };
@@ -179,80 +190,75 @@ const addContactModal = () => {
   toggleBackdrop();
 };
 
+// const formValidation = (
+//   isUpdateModalInputVisible = false,
+//   alertMode = false
+// ) => {
+//   const inputs = isUpdateModalInputVisible ? editModalInputs : userInputs;
+
+//   const alert = alertMode ? editValidAlert : addValidAlert;
+
+//   for (let i = 0; i < inputs.length; i++) {
+//     if (i === 2) {
+//       continue;
+//     } else if (!inputs[i].value) {
+//       alert[i].classList.add("visible-alert");
+//     } else if (i === 5 || i === 6) {
+//       if (i === 5) {
+//         if (!inputs[i].checked) {
+//           alert[5].classList.add("visible-alert");
+//         } else {
+//           alert[5].classList.remove("visible-alert");
+//         }
+//       } else {
+//         if (!inputs[i].checked && !inputs[5].checked) {
+//           alert[5].classList.add("visible-alert");
+//         } else {
+//           alert[5].classList.remove("visible-alert");
+//         }
+//       }
+//     } else {
+//       alert[i].classList.remove("visible-alert");
+//     }
+//   }
+// };
+
 const addContactHandler = () => {
   const firstName = userInputs[0].value;
   const lastName = userInputs[1].value;
-  const imageValue = userInputs[2].value;
+  const imageValue = userInputs[2].value
+    ? userInputs[2].value
+    : randomAvatarUrlGenerator();
   const emailValue = userInputs[3].value;
   const phoneNoVal = userInputs[4].value;
+
   const statusVal = userInputs[5].checked
     ? userInputs[5].value
     : userInputs[6].value;
-  console.log(statusVal);
+  // formValidation();
 
-  if (
-    firstName === "" ||
-    imageValue === "" ||
-    lastName === "" ||
-    emailValue === "" ||
-    +phoneNoVal < 1 // ||
-    // +phoneNoVal.length > 10 ||
-    // +phoneNoVal.length < 10
-  ) {
-    alert("Please Enter a Valid Input");
-    return;
-  }
-  // const setErrorMsg = (input, errorMsg) => {
-  //   const modalContact = input.parentElement;
-  //   const small = modalContact.querySelector("small");
-  //   modalContact.className = "modal__contact error";
-  //   small.innerHTML = errorMsg;
-  // };
-  // const setSuccessMsg = (input, errorMsg) => {
-  //   const modalContact = input.parentElement;
-  //   modalContact.className = "modal__contact success";
-  // };
+  // for (const validAl of addValidAlert) {
+  //   if (validAl.className.includes("visible-alert")) {
+  //     swal({
+  //       title: "Ooops!",
+  //       text: "Please fill alll mandetory fields *",
+  //       icon: "error",
+  //     });
+  //     return;
+  //   }
+  // }
 
-  // const isEmail = (emailValue) => {
-  //   let atSymbol = emailValue.indexOf("@");
-  //   if (atSymbol < 1) {
-  //     return false;
-  //   }
-  //   let dot = emailValue.lastIndexOf(".");
-  //   if (dot <= atSymbol + 3) {
-  //     return false;
-  //   } else if (dot === emailValue.length - 1) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // };
-  // // firstname & lastname Vadiation
-  // if (firstName === "" || lastName === "") {
-  //   setErrorMsg(firstName, "firstname cannot be blank");
-  //   setErrorMsg(lastName, "lastname cannot be blank");
-  // } else if (firstName.length <= 2 || lastName.length <= 2) {
-  //   setErrorMsg(firstName, "firstname min 3 char");
-  //   setErrorMsg(lastName, "lastname min 3 char");
-  // } else {
-  //   setSuccessMsg(firstName);
-  //   setSuccessMsg(lastName);
-  // }
-  // // email ValidATION
-  // if (emailValue === "") {
-  //   setErrorMsg(emailValue, "email cannot be blank");
-  // } else if (!isEmail(emailValue)) {
-  //   setErrorMsg(emailValue, "Not a valid email");
-  // } else {
-  //   setSuccessMsg(emailValue);
-  // }
-  // // phone Validation
-  // if (phoneNoVal === "") {
-  //   setErrorMsg(phoneNoVal, "phone cannot be blank");
-  // } else if (phoneNoVal !== 10) {
-  //   setErrorMsg(phoneNoVal, "Not Valid phone number");
-  // } else {
-  //   setSuccessMsg(phoneNoVal);
+  // if (
+  //   firstName === "" ||
+  //   imageValue === "" ||
+  //   lastName === "" ||
+  //   emailValue === "" ||
+  //   +phoneNoVal < 1 // ||
+  //   // +phoneNoVal.length > 10 ||
+  //   // +phoneNoVal.length < 10
+  // ) {
+  //   alert("Please Enter a Valid Input");
+  //   return;
   // }
   let newContacts = {
     id: Math.random(),
@@ -264,8 +270,6 @@ const addContactHandler = () => {
     status: statusVal,
   };
   contacts.push(newContacts);
-  console.log(contacts);
-
   closeAddContactModal();
   toggleBackdrop();
   renderContactElement();
@@ -279,11 +283,7 @@ const cancelDeletionModal = () => {
 };
 
 const editModalUpdateBtnHandler = () => {
-  // console.log(contacts);
   const editedContact = { ...selectedContactForEdit };
-
-  console.log(editedContact);
-  console.log(contacts);
 
   editedContact.firstName = editModalInputs[0].value;
   editedContact.lastName = editModalInputs[1].value;
@@ -295,15 +295,26 @@ const editModalUpdateBtnHandler = () => {
       ? editModalInputs[5].value
       : editModalInputs[6].value;
 
+  formValidation(true, true);
+
+  for (const validAl of editValidAlert) {
+    if (validAl.className.includes("visible-alert")) {
+      swal({
+        title: "Ooops!",
+        text: "Please fill alll mandetory fields *",
+        icon: "error",
+      });
+      return;
+    }
+  }
   contacts.splice(
     contacts.findIndex((contact) => contact.id === editedContact.id),
     1,
     editedContact
   );
-
+  sessionStorage.setItem("contactsData", JSON.stringify(contacts));
   closeEditContactModal();
   removeBackdrop();
-  // console.log(editedContact);
 
   renderContactElement();
 };
