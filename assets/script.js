@@ -16,13 +16,13 @@ const addValidAlert = document.querySelectorAll("small");
 const editValidAlert = document.querySelectorAll("span");
 
 let successBtn = document.getElementById("btn-success");
-const contacts = [];
+let contacts = [];
 
-// if (!sessionStorage.getItem("contactsData")) {
-//   sessionStorage.setItem("contactsData", JSON.stringify(contacts));
-// } else {
-//   contacts = JSON.parse(sessionStorage.getItem("contactsData"));
-// }
+if (!sessionStorage.getItem("contactsData")) {
+  sessionStorage.setItem("contactsData", JSON.stringify(contacts));
+} else {
+  contacts = JSON.parse(sessionStorage.getItem("contactsData"));
+}
 
 let selectedContactForEdit = {};
 
@@ -146,8 +146,8 @@ const randomAvatarUrlGenerator = () => {
 const renderContactElement = () => {
   resetUi();
   contacts.map((contact) => {
-    const editId = `edit${Math.random()}`;
-    const deleteId = `delete${Math.random()}`;
+    let editId = `edit${Math.random()}`;
+    let deleteId = `delete${Math.random()}`;
     const newContactElement = document.createElement("div");
     newContactElement.className = "contact-element";
     newContactElement.innerHTML = `
@@ -190,38 +190,38 @@ const addContactModal = () => {
   toggleBackdrop();
 };
 
-// const formValidation = (
-//   isUpdateModalInputVisible = false,
-//   alertMode = false
-// ) => {
-//   const inputs = isUpdateModalInputVisible ? editModalInputs : userInputs;
+const formValidation = (
+  isUpdateModalInputVisible = false,
+  alertMode = false
+) => {
+  const inputs = isUpdateModalInputVisible ? editModalInputs : userInputs;
 
-//   const alert = alertMode ? editValidAlert : addValidAlert;
+  const alert = alertMode ? editValidAlert : addValidAlert;
 
-//   for (let i = 0; i < inputs.length; i++) {
-//     if (i === 2) {
-//       continue;
-//     } else if (!inputs[i].value) {
-//       alert[i].classList.add("visible-alert");
-//     } else if (i === 5 || i === 6) {
-//       if (i === 5) {
-//         if (!inputs[i].checked) {
-//           alert[5].classList.add("visible-alert");
-//         } else {
-//           alert[5].classList.remove("visible-alert");
-//         }
-//       } else {
-//         if (!inputs[i].checked && !inputs[5].checked) {
-//           alert[5].classList.add("visible-alert");
-//         } else {
-//           alert[5].classList.remove("visible-alert");
-//         }
-//       }
-//     } else {
-//       alert[i].classList.remove("visible-alert");
-//     }
-//   }
-// };
+  for (let i = 0; i < inputs.length; i++) {
+    if (i === 2) {
+      continue;
+    } else if (!inputs[i].value) {
+      alert[i].classList.add("visible-alert");
+    } else if (i === 5 || i === 6) {
+      if (i === 5) {
+        if (!inputs[i].checked) {
+          alert[5].classList.add("visible-alert");
+        } else {
+          alert[5].classList.remove("visible-alert");
+        }
+      } else {
+        if (!inputs[i].checked && !inputs[5].checked) {
+          alert[5].classList.add("visible-alert");
+        } else {
+          alert[5].classList.remove("visible-alert");
+        }
+      }
+    } else {
+      alert[i].classList.remove("visible-alert");
+    }
+  }
+};
 
 const addContactHandler = () => {
   const firstName = userInputs[0].value;
@@ -235,18 +235,19 @@ const addContactHandler = () => {
   const statusVal = userInputs[5].checked
     ? userInputs[5].value
     : userInputs[6].value;
-  // formValidation();
 
-  // for (const validAl of addValidAlert) {
-  //   if (validAl.className.includes("visible-alert")) {
-  //     swal({
-  //       title: "Ooops!",
-  //       text: "Please fill alll mandetory fields *",
-  //       icon: "error",
-  //     });
-  //     return;
-  //   }
-  // }
+  formValidation();
+
+  for (const validAl of addValidAlert) {
+    if (validAl.className.includes("visible-alert")) {
+      swal({
+        title: "Ooops!",
+        text: "Please fill all mandetory fields *",
+        icon: "error",
+      });
+      return;
+    }
+  }
 
   // if (
   //   firstName === "" ||

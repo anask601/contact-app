@@ -38,8 +38,8 @@ header h1 {
 header button {
   font: baloo paaji 2;
   padding: 0.5rem 1rem;
-  background: #f67722;
-  border: 1px solid #f67722;
+  /* background: #f67722; */
+  /* border: 1px solid #f67722; */
   color: white;
   border-radius: 6px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.26);
@@ -386,10 +386,11 @@ h4 {
   width: 40%;
   top: 20vh;
   left: 30%;
-  padding: 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   background-color: white;
 }
@@ -444,7 +445,7 @@ h4 {
   } */
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .modal {
     left: calc(50% - 20rem);
     left: 10%;
@@ -467,7 +468,7 @@ h4 {
   #delete-modal {
     height: 20%;
   }
-}
+} */
 
 @keyframes fade-slide-in {
   from {
