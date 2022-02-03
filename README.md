@@ -7,4 +7,4 @@ Javascript, HTML, CSS...
 
 # My Contact-App
 
-#This Project Is Made By ```Anas Khan``` Using Pure JavaScript
+#This Project Is Made By ```Anas Khan``` Using Vanilla JavaScript
